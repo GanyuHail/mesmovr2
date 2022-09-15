@@ -9,6 +9,8 @@ import {
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+import { VRButton } from 'three/addons/webxr/VRButton.js';
+
 let camera, scene, renderer;
 
 class App {
@@ -29,7 +31,9 @@ class App {
 		renderer = new WebGLRenderer( { antialias: true } );
 		renderer.setPixelRatio( window.devicePixelRatio );
 		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.xr.enabled = true;
 		document.body.appendChild( renderer.domElement );
+		document.body.appendChild( VRButton.createButton( renderer ) );
 
 		window.addEventListener( 'resize', onWindowResize, false );
 
@@ -52,9 +56,10 @@ function onWindowResize() {
 
 function animate() {
 
-	requestAnimationFrame( animate );
-	renderer.render( scene, camera );
-
+	renderer.setAnimationLoop( function () {
+		renderer.render( scene, camera );
+	
+	} );
 }
 
 export default App;
